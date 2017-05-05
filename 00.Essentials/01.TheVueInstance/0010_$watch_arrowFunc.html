@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div id="example">
+    <p>{{ a }}</p>
+    <input v-model="a">
+</div>
+
+<script>
+    var data = {a:1}
+    var vm = new Vue({
+        el:'#example',
+        data:data
+    })
+
+    console.log(vm.$data === data)
+    console.log(vm.$el === document.getElementById('example'))
+
+    //$watch 是一个实例方法
+    vm.$watch('a',console.log("changed from: " + oldVal + " to " + newVal));
+</script>
+
+</body>
+</html>

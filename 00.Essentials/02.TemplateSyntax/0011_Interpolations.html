@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        function typeName(obj){
+            var typeName = Object.prototype.toString.call(obj).slice(8,-1).toLowerCase();
+            return typeName;
+        }
+    </script>
+</head>
+<body>
+
+<div id="app01_text">
+
+    <input v-model="msg">
+    <br>
+    <span>
+        Message that will change :{{msg}}
+    </span>
+    <br>
+    <span v-once>
+        Message that won't change :{{msg}}
+    </span>
+</div>
+<script>
+    var app01 = new Vue({
+        el:"#app01_text",
+        data:{
+            msg:"app01 msg"
+        }
+    })
+</script>
+
+<br>
+
+<div id="app02_rawHtml">
+    <input v-model="msg">
+    <br>
+    <span>Content that will compile as html : </span>
+    <span v-html="msg"></span>
+    <br>
+    <span>
+        Content that won't compile as html : {{msg}}
+    </span>
+</div>
+<script>
+    var app02 = new Vue({
+        el:"#app02_rawHtml",
+        data:{
+            msg:"<p><b>app02 msg</b></p>"
+        }
+    })
+</script>
+
+<br>
+
+<div id="app03_attributes">
+    <input v-model="active" placeholder="1: enable, others: disable">
+    <br>
+    <input placeholder="msg" :disabled="disabled">
+    <br>
+</div>
+
+<script>
+
+    var active = "2"
+    var app03 = new Vue({
+        el:"#app03_attributes",
+        data:{
+            id:"",
+            active:active,
+            disabled:active!="1",
+        }
+
+    })
+    console.log(app03.disabled)
+    app03.$watch("active",function(newVal, oldVal){
+        console.log("active: " + newVal)
+//        console.log(typeName(app03.active))
+        this.disabled = newVal==="1"?false:true;
+        console.log("disabled: " + this.disabled)
+    })
+</script>
+
+</body>
+</html>

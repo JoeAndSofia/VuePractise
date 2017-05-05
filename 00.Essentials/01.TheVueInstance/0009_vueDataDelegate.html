@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<script>
+    var data = {a:1};
+    var vm = new Vue({
+        data:data,
+    })
+
+    console.log(data)
+//    console.log(vm)
+    console.log(vm._data)
+
+    console.log(vm.a === data.a)
+
+    vm.a = 2
+    console.log(data.a)
+
+    data.a = 3
+    console.log(vm.a)
+
+</script>
+</body>
+</html>
