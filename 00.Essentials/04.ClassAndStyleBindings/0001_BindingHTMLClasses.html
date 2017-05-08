@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style>
+        .italic {font-style: italic}
+        .bold {font-weight:bold }
+        .error {color:red}
+        .underline {text-decoration:underline}
+
+        .red {color:red}
+        .orange {color:orange}
+        .yellow {color:yellow}
+        .green {color:green}
+        .cyan {color:cyan}
+        .blue {color:blue}
+        .purple {color:purple}
+    </style>
+</head>
+
+<body>
+
+<div id="app01_objectSyntax_v01">
+    <input v-model="boldWatcher"><br>
+    <input v-model="errorWatcher"><br>
+
+    <div>bold: {{bold}}</div>
+    <div>error: {{error}}</div>
+    <div id="app01_div01" v-bind:class="{ bold: bold }"></div>
+    <div id="app01_div02" class="italic" v-bind:class="{ bold: bold, 'error': error }"></div>
+    <div id="app01_div03" class="italic" v-bind:class="{ 'bold': bold, 'error': error }"></div>
+
+    <button v-on:click="className()">Show className</button>
+
+</div>
+<script>
+
+    //Attention: div's inner html text will be refreshed before the class name's updating,,
+    //so clike "Show className" will show you the right current class name for each div.
+    var app01_objectSyntax_v01 = new Vue({
+        el:"#app01_objectSyntax_v01",
+        data:{
+            bold:true,
+            error:true,
+            boldWatcher:"1",
+            errorWatcher:"1",
+        },
+        watch:{
+            boldWatcher:function(newVal){
+                this.bold = (newVal=="1")
+                this.className();
+            },
+            errorWatcher:function(newVal){
+                this.error = (newVal=="1")
+                this.className();
+            },
+        },
+        methods:{
+            className:function(){
+                console.log("bold: " + this.bold)
+                console.log("error: " + this.error)
+
+                var app01_div01 = document.getElementById("app01_div01")
+                this.eachDiv(app01_div01, "01")
+
+                var app01_div02 = document.getElementById("app01_div02")
+                this.eachDiv(app01_div02, "02")
+
+                var app01_div03 = document.getElementById("app01_div03")
+                this.eachDiv(app01_div03, "03")
+            },
+            eachDiv:function(divEle, index){
+                var info = "div" + index + " class: " + divEle.className
+                divEle.innerHTML = info;
+//                console.log(info)
+            }
+        }
+    })
+</script>
+<br>
+<div>------------------------------------------------------------</div>
+<br>
+<div id="app01_objectSyntax_v02">
+    <input v-model="italicWatcher"><br>
+    <input v-model="boldWatcher"><br>
+    <input v-model="errorWatcher"><br>
+
+    <div>italic: {{classObject.italic}}</div>
+    <div>bold: {{classObject.bold}}</div>
+    <div>error: {{classObject.error}}</div>
+
+    <div id="app01_div04" v-bind:class="classObject"></div>
+
+    <button v-on:click="className()">Show className</button>
+
+</div>
+<script>
+
+    var app01_objectSyntax_v02 = new Vue({
+        el:"#app01_objectSyntax_v02",
+        data: {
+            classObject: {
+                "italic":true,
+                "bold": true,
+                "error": true,
+            },
+            italicWatcher:"1",
+            boldWatcher:"1",
+            errorWatcher:"1",
+        },
+        watch:{
+            italicWatcher:function(newVal){
+                this.classObject.italic = (newVal=="1")
+                this.className()
+            },
+            boldWatcher:function(newVal){
+                this.classObject.bold = (newVal=="1")
+                this.className();
+            },
+            errorWatcher:function(newVal){
+                this.classObject.error = (newVal=="1")
+                this.className();
+            },
+        },
+        methods:{
+            className:function(){
+                var app01_div04 = document.getElementById("app01_div04")
+                this.eachDiv(app01_div04, "04")
+            },
+            eachDiv:function(divEle, index){
+                var info = "div" + index + " class: " + divEle.className
+                divEle.innerHTML = info;
+//                console.log(info)
+            }
+        }
+    })
+</script>
+<br>
+<div>------------------------------------------------------------</div>
+<br>
+<div id="app01_objectSyntax_v03">
+    <input v-model="italic"><br>
+    <input v-model="bold"><br>
+    <input v-model="error"><br>
+
+    <div>italic: {{italic=="1"}}</div>
+    <div>bold: {{bold=="1"}}</div>
+    <div>error: {{error=="1"}}</div>
+
+    <div id="app01_div05" v-bind:class="computedClass"></div>
+
+    <button v-on:click="className()">Show className</button>
+
+</div>
+<script>
+
+    var app01_objectSyntax_v03 = new Vue({
+        el:"#app01_objectSyntax_v03",
+        data: {
+            italic:"1",
+            bold:"1",
+            error:"1",
+        },
+        computed:{
+            computedClass:function(){
+                this.className()
+                return {
+                    italic:this.italic=="1",
+                    bold:this.bold=="1",
+                    error:this.error=="1"
+                }
+            },
+        },
+        methods:{
+            className:function(){
+                var app01_div05 = document.getElementById("app01_div05")
+                this.eachDiv(app01_div05, "05")
+            },
+            eachDiv:function(divEle, index){
+                var info = "div" + index + " class: " + divEle.className
+                divEle.innerHTML = info;
+//                console.log(info)
+            }
+        }
+    })
+</script>
+<br>
+<div>************************* Separator *************************</div>
+<br>
+<div id="app02_arraySyntax_v01">
+    <input v-model="italic"><br>
+    <input v-model="bold"><br>
+    <input v-model="error"><br>
+
+    <div>colorIndex: {{colorIndex}}</div>
+    <div>italic: {{italic=="1"}}</div>
+    <div>bold: {{bold=="1"}}</div>
+    <div>error: {{error=="1"}}</div>
+
+    <div id="app02_div01" v-bind:class="colorArr[colorIndex]">div01 class: {{colorArr[colorIndex]}}</div>
+    <div id="app02_div02" v-bind:class="[colorArr[0],colorArr[1],colorArr[2],colorArr[3],colorArr[4],colorArr[5],colorArr[6]]"></div>
+    <button v-on:click="changeIndex()">Change Index</button>
+    <br>
+
+    <div id="app02_div03" v-bind:class='[italic=="1"?"italic":"", bold=="1"?"bold":"", error=="1"?"error":""]'></div>
+    <br>
+
+    <div id="app02_div04" v-bind:class='[italicOrBold?"italic":"bold", "error"]'></div>
+    <button v-on:click="changeItalicOrBold()">Change Italic or Bold</button>
+    <br>
+
+    <button v-on:click="className()">Show className</button>
+
+</div>
+<script>
+
+    var app02_arraySyntax_v01 = new Vue({
+        el:"#app02_arraySyntax_v01",
+        data: {
+            colorIndex:0,
+            italic:"1",
+            bold:"1",
+            error:"1",
+            italicOrBold:true,
+            colorArr:[
+                    "red",
+                    "orange",
+                    "yellow",
+                    "green",
+                    "cyan",
+                    "blue",
+                    "purple",
+            ]
+        },
+        computed:{
+            computedClass:function(){
+                this.className()
+                return {
+                    italic:this.italic=="1",
+                    bold:this.bold=="1",
+                    error:this.error=="1"
+                }
+            },
+        },
+        methods:{
+            changeIndex:function(){
+                this.colorIndex += 1
+                this.colorIndex %= 7
+                this.className();
+            },
+            changeItalicOrBold:function(){
+                this.italicOrBold =! this.italicOrBold
+                this.className();
+            },
+            className:function(){
+//                var app02_div01 = document.getElementById("app02_div01")
+//                this.eachDiv(app02_div01, "01")
+
+                //if same style in array,only the last take effect
+                var app02_div02 = document.getElementById("app02_div02")
+                this.eachDiv(app02_div02, "02")
+
+                var app02_div03 = document.getElementById("app02_div03")
+                this.eachDiv(app02_div03, "03")
+
+                var app02_div04 = document.getElementById("app02_div04")
+                this.eachDiv(app02_div04, "04")
+            },
+            eachDiv:function(divEle, index){
+                var info = "div" + index + " class: " + divEle.className
+                divEle.innerHTML = info;
+//                console.log(info)
+            }
+        }
+    })
+</script>
+<br>
+<div>************************* Separator *************************</div>
+<br>
+<div id="app03_withComponents_v01" class="italic purple">
+    <div id="app03_div00" class="bold"></div>
+    <div id="app03_div01" class="bold underline" v-bind:class="colorArr[colorIndex]"></div>
+    <button v-on:click="changeIndex()">Change Index</button>
+    <br>
+    <button v-on:click="className()">Show className</button>
+</div>
+<script>
+    var app03_withComponents_v01 = new Vue({
+        el:"#app03_withComponents_v01",
+        data: {
+            colorIndex:0,
+            italic:"1",
+            bold:"1",
+            error:"1",
+            colorArr:[
+                "red",
+                "orange",
+                "yellow",
+                "green",
+                "cyan",
+                "blue",
+                "purple",
+            ]
+        },
+        computed:{
+            computedClass:function(){
+                this.className()
+                return {
+                    italic:this.italic=="1",
+                    bold:this.bold=="1",
+                    error:this.error=="1"
+                }
+            },
+        },
+        methods:{
+            changeIndex:function(){
+                this.colorIndex += 1
+                this.colorIndex %= 7
+                this.className();
+            },
+            className:function(){
+                var app03 = document.getElementById("app03_withComponents_v01")
+                var app03_div00 = document.getElementById("app03_div00")
+                app03_div00.innerHTML = "app03 class: " + app03.className + "<br>" +
+                                "div00 class: " + app03_div00.className
+
+                var app03_div01 = document.getElementById("app03_div01")
+                this.eachDiv(app03_div01, "01")
+            },
+            eachDiv:function(divEle, index){
+                var info = "div" + index + " class: " + divEle.className
+                divEle.innerHTML = info;
+//                console.log(info)
+            }
+        }
+    })
+</script>
+<br>
+<div>------------------------------------------------------------</div>
+<br>
+<div id="app03_withComponents_v02">
+
+    <my-component id="app03_myComponent" class="baz" v-bind:class="myComponent"></my-component>
+
+    <button v-on:click="changeClass()">Change class</button>
+
+    <button v-on:click="className()">Show className</button>
+</div>
+<script>
+    Vue.component('my-component',{
+        template:'<p class="foo bar">Hi</p>'
+    })
+
+    var app03_withComponents_v02 = new Vue({
+        el:"#app03_withComponents_v02",
+        data:{
+            myComponent:"boo",
+        },
+        methods:{
+            changeClass:function(){
+                this.myComponent += "1"
+                this.className();
+            },
+            className:function(){
+                var app03_myComponent = document.getElementById("app03_myComponent")
+                this.eachDiv(app03_myComponent, "myComponent")
+            },
+            eachDiv:function(component, name){
+                var info = "component " + name + " class: " + component.className
+                component.innerHTML = info;
+//                console.log(info)
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
